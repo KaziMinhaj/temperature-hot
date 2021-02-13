@@ -22,21 +22,47 @@
     <div class="container">
         <form class="col-md-6 m-auto py-5">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <input id="city-name" type="text" class="form-control" placeholder="Enter a location for Weather ...">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-danger">Search</button>
+                    <button id="search" type="button" class="btn btn-danger">Search</button>
                 </div>
             </div>
         </form>
         <div class="weather-status text-white text-center">
             <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
-            <h1>Dhaka</h1>
-            <h3><span>38.06</span>&deg;C</h3>
-            <h1 class="lead">Clouds</h1>
+            <h1 id="city-display">Dhaka</h1>
+            <h3><span id="temp">38.06</span>&deg;C</h3>
+            <h1 id="weather" class="lead">Clouds</h1>
         </div>
     </div>
 
     <script>
+
+        const search = document.getElementById("search");
+        search.addEventListener('click', function () {
+
+            const city = document.getElementById("city-name").value;
+            fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=7b419bb02b12b3f986ec3cb6f3b37b95`)
+                .then(response => response.json())
+                .then(json => {
+                    const cityName = json.name;
+                    const temp = json.main.temp - 273;
+                    const weather = json.weather[0].main;
+                    const icon = json.weather[0].icon;
+
+                    document.getElementById("city-display").innerText = cityName;
+                    document.getElementById("temp").innerText = temp;
+                    document.getElementById("weather").innerText = weather;
+
+                    console.log(icon);
+
+
+
+                });
+
+
+
+        })
 
     </script>
 </body>
